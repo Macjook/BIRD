@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐦 Random Bird Facts</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #e0f7fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+header {
+  background: #00796b;
+  color: #fff;
+  padding: 30px 20px;
+  width: 100%;
+  text-align: center;
+}
+h1 { margin: 0; font-size: 2.5rem; }
+
+.fact-container {
+  background: #fff;
+  padding: 30px;
+  margin-top: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  max-width: 600px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.fact-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.fact {
+  font-size: 1.2rem;
+  color: #004d40;
+  margin-bottom: 20px;
+  line-height: 1.5rem;
+}
+
+button {
+  background: #00796b;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover {
+  background: #004d40;
+}
+.loading {
+  color: #00796b;
+  font-size: 1.1rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>🐦 Random Bird Facts</h1>
+</header>
+
+<div class="fact-container">
+  <div class="fact" id="fact">Loading a random bird fact...</div>
+  <button id="newFactBtn">Get Another Fact 🐤</button>
+</div>
+
+<script>
+// Elements
+const factEl = document.getElementById('fact');
+const btn = document.getElementById('newFactBtn');
+
+// Val.Town Random Bird Facts API
+const API_URL = 'https://val.town/x/greasegum/birdfacts/api/birds/random';
+
+// Fetch a random bird fact
+async function getRandomFact() {
+  factEl.textContent = 'Loading...';
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    // The API returns { name: "...", fact: "..." }
+    factEl.textContent = `${data.fact} — (${data.name})`;
+  } catch (err) {
+    console.error(err);
+    factEl.textContent = 'Oops! Could not load a bird fact. Try again.';
+  }
+}
+
+// Event listener for button
+btn.addEventListener('click', getRandomFact);
+
+// Load initial fact
+getRandomFact();
+</script>
+
+</body>
+</html>
